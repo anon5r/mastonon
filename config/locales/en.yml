@@ -1,7 +1,7 @@
 ---
 en:
   about:
-    about_mastodon: Mastodon is a <em>free, open-source</em> social network. A <em>decentralized</em> alternative to commercial platforms, it avoids the risks of a single company monopolizing your communication. Pick a server that you trust &mdash; whichever you choose, you can interact with everyone else. Anyone can run their own Mastodon instance and participate in the <em>social network</em> seamlessly.
+    about_mastodon: <div><em>Mastonon</em> = Mastodon + anon</div><p>Mastonon is a SNS compatible with GNU OpenSocial built by Mastodon. This instance is operated by Japanese person. The administrator can view your e-mail address when you join to instance. but the administrator will not use by private, or provide it to a third party without permission.</p><p>Currently, this instance is personal use for experimental use. You cannot join here. If you want join to Mastodon, <a href="https://instances.mastodon.xyz/list">you can find here for other instances</a>.</p>
     about_this: About this instance
     apps: Apps
     business_email: 'Business e-mail:'

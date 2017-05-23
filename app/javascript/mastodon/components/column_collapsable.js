@@ -8,11 +8,11 @@ class ColumnCollapsable extends React.PureComponent {
     title: PropTypes.string,
     fullHeight: PropTypes.number.isRequired,
     children: PropTypes.node,
-    onCollapse: PropTypes.func
+    onCollapse: PropTypes.func,
   };
 
   state = {
-    collapsed: true
+    collapsed: true,
   };
 
   handleToggleCollapsed = () => {
@@ -35,12 +35,13 @@ class ColumnCollapsable extends React.PureComponent {
           <i className={`fa fa-${icon}`} />
         </div>
 
-        <div className='column-collapsable__content' style={{ height: `${fullHeight}px`, maxHeight: '70vh' }}>
-          {children}
+        <div className='column-collapsable__content' style={{ height: `${fullHeight}px` }}>
+          {!collapsed && children}
         </div>
       </div>
     );
   }
+
 }
 
 export default ColumnCollapsable;

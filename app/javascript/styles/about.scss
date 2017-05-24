@@ -5,6 +5,8 @@
     color: $ui-primary-color;
     padding-top: 50px;
     padding-bottom: 50px;
+    background: rgba(50,50,50,.8);
+    @include font-outline(1px);
 
     &.thicc {
       max-width: 800px;

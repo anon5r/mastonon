@@ -11,11 +11,11 @@
   background-size: $size $size;
 }
 
-@mixin font-outline($lineWidth: 2px, $color: #000, $steps: 16){
+@mixin font-outline($lineWidth: 2px, $color: #000, $steps: 16) {
   $q: "";
-  @for $i from 0 through $steps{
-    $q: $q + cos($i / $steps * 360) * $lineWidth sin($i / $steps * 360) * $lineWidth 0px $color;
-    @if($i != $steps){
+  @for $i from 0 through $steps {
+    $q: $q + cos($i / $steps * 360) * $lineWidth sin($i / $steps * 360) * $lineWidth 0 $color;
+    @if($i != $steps) {
       $q: $q + ", ";
     }
   }

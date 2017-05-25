@@ -10,3 +10,12 @@
   height: $size;
   background-size: $size $size;
 }
+
+@mixin font-outline($lineWidth: 1px, $color: #000) {
+  text-shadow:
+    -1px -1px $lineWidth - 1px $color,
+    1px -1px $lineWidth - 1px $color,
+    -1px 1px $lineWidth - 1px $color,
+    1px 1px $lineWidth - 1px $color;
+  -webkit-font-smoothing: antialiased;
+}

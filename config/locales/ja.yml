@@ -1,7 +1,7 @@
 ---
 ja:
   about:
-    about_mastodon: <p><ruby><em>Mastonon</em><rp>(</rp><rt>マストノン</rt><rp>)</rp></ruby>は "マストドン" と "あのん" を組み合わせた造語です。</p><p>Mastononはマストドンによって構築された GNU OpenSocial に対応したSNSです。日本人によって運用されており、アカウント登録に使用するメールアドレスは管理者によって閲覧可能ですが、登録された情報を管理者が私的に利用したり、無許可で第三者に提供するようなことは致しません。</p><p>現在このインスタンスは実験目的で個人利用となっており、一般受付を行っておりません。マストドンに参加してみたい方は<a href="https://instances.mastodon.xyz/list">こちらから他のインスタンスを探す</a>ことができます。</p>
+    about_mastodon: <p><ruby><em>Mastonon</em><rp>(</rp><rt>マストノン</rt><rp>)</rp></ruby>は "マストドン" と "あのん" を組み合わせた造語です。</p><p>Mastononは<em>Mastodon (マストドン)</em>によって構築された GNU OpenSocial に対応したSNSです。Mastodonは分散型プラットフォームとなっており、どのインスタンスで登録しても楽しむことができます。登録する際は信頼できるインスタンスを選択してください。</p><p>当院スタンスは日本人によって運用されており、アカウント登録に使用するメールアドレスは管理者によって閲覧可能ですが、登録された情報を管理者が私的に利用したり、無許可で第三者に提供するようなことは致しません。</p>
     about_this: このインスタンスについて
     apps: アプリ
     business_email: 'ビジネスメールアドレス:'
@@ -202,7 +202,7 @@ ja:
   authorize_follow:
     error: 残念ながら、リモートアカウントにエラーが発生しました。
     follow: フォロー
-    prompt_html: 'あなた（<strong>%{self}</strong>）は以下のアカウントのフォローをリクエストしました:'
+    prompt_html: 'あなた（<strong>%{self}</strong>）は以下のアカウントにフォローリクエストしました:'
     title: "%{acct} をフォロー"
   datetime:
     distance_in_words:

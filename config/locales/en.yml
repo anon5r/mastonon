@@ -1,7 +1,7 @@
 ---
 en:
   about:
-    about_mastodon: <p><em>Mastonon</em> = Mastodon + anon</p><p>Mastonon is a SNS compatible with GNU OpenSocial built by Mastodon. This instance is operated by Japanese person. The administrator can view your e-mail address when you join to instance. but the administrator will not use by private, or provide it to a third party without permission.</p><p>Currently, this instance is personal use for experimental use. You cannot join here. If you want join to Mastodon, <a href="https://instances.mastodon.xyz/list">you can find here for other instances</a>.</p>
+    about_mastodon: <p><em>Mastonon</em> = Mastodon + anon</p><p>Mastonon is a SNS compatible with GNU OpenSocial built by Mastodon. Mastodon is a distributed platform, and you can enjoy it regardless of which instance you register. Please choose a trusted instance when registering.</p><p>This instance is operated by Japanese person. The administrator can view your e-mail address when you join to instance. But the administrator will not use by private, or provide it to a third party without permission.</p>
     about_this: About this instance
     apps: Apps
     business_email: 'Business e-mail:'

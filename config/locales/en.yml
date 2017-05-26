@@ -10,6 +10,16 @@ en:
     description_headline: What is %{domain}?
     domain_count_after: other instances
     domain_count_before: Connected to
+    rules:
+      discriminations: Racism, xenophobia, homophobia are strictly prohibited.
+      pornos: Immoral and indecent child pics are strictly prohibited.
+      nsfw: NSFW is allowed only in Content Warning.
+      grotesque: Gory, bloody and violent pictures only in Content Warning.
+      trolling: Don't be a troll, Don't be a bully.
+      jerking: Don't be a jerk, please.
+      reporting: You can report every post you judge offensive.
+      contry_law: We are in the cloud but respect your own country law.
+    rules_headline: What are the rules ?
     features:
       api: Open API for apps and services
       blocks: Rich block and muting tools

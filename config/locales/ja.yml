@@ -10,6 +10,16 @@ ja:
     description_headline: "%{domain} とは？"
     domain_count_after: 個のインスタンス
     domain_count_before: 接続中
+    rules:
+      discriminations: 人種差別、外国人差別、同性愛者差別などの差別発言は厳禁です
+      pornos: 児童ポルノ、および公序良俗に反する画像の投稿は厳禁です
+      nsfw: NSFW（Not Safe For Work/職場閲覧注意）な内容は、CW（Contents Warning/閲覧警告）を挟んだ投稿のみ許可されています
+      grotesque: 残虐的、暴力的な画像は、CW（Contents Warning/閲覧警告）を挟んだ投稿のみ許可されています
+      trolling: 荒らし行為や喧嘩はやめましょう
+      jerking: 独りよがりな振る舞いをしないよう、心がけてください
+      reporting: 不適切な投稿だと思ったものは、運営に報告してください
+      contry_law: Mastonon はインターネット上にありますが、自国の法律を遵守しましょう
+    rules_headline: Mastonon 上のルール
     features:
       api: アプリやその他サービスにAPIを公開
       blocks: 豊富なブロックやミュート機能

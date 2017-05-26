@@ -40,7 +40,39 @@
           ·
           = link_to t('about.about_this'), about_more_path
 
-  %h3= t('about.features_headline')
+  %h3= t('about.rules_headline')
+
+  .rules-list
+    .rules-list__column
+      %ul.fa-ul
+        %li
+          = fa_icon('li check-square')
+          = t 'about.rules.discriminations'
+        %li
+          = fa_icon('li check-square')
+          = t 'about.rules.pornos'
+        %li
+          = fa_icon('li check-square')
+          = t 'about.rules.nsfw'
+        %li
+          = fa_icon('li check-square')
+          = t 'about.rules.grotesque'
+    .rules-list__column
+      %ul.fa-ul
+        %li
+          = fa_icon('li check-square')
+          = t 'about.rules.trolling'
+        %li
+          = fa_icon('li check-square')
+          = t 'about.rules.jerking'
+        %li
+          = fa_icon('li check-square')
+          = t 'about.rules.reporting'
+        %li
+          = fa_icon('li check-square')
+          = t 'about.rules.contry_law'
+
+  %h3= t('about.rules_headline')
 
   .features-list
     .features-list__column

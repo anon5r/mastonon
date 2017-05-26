@@ -13,8 +13,8 @@ en:
     rules:
       discriminations: Racism, xenophobia, homophobia are strictly prohibited.
       pornos: Immoral and indecent child pics are strictly prohibited.
-      nsfw: NSFW is allowed only in Content Warning.
-      grotesque: Gory, bloody and violent pictures only in Content Warning.
+      nsfw: Must be use NSFW for images that are not suitable for public browsing.
+      grotesque: Grotesque, bloody, violent pictures, and what feel to be contents to others must be used in Content Warning.
       trolling: Don't be a troll, Don't be a bully.
       jerking: Don't be a jerk, please.
       reporting: You can report every post you judge offensive.

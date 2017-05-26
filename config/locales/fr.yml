@@ -13,10 +13,10 @@ fr:
     rules:
       discriminations: Le racisme, la xénophobie et l'homophobie sont totalement prohibés.
       pornos: Les Lolicons, images d'enfants et immorales sont totalement prohibées.
-      nsfw: Les images sexuelles doivent absolument être en Content Warning.
+      nsfw: Doivent utiliser NSFW pour des images qui ne conviennent pas à la navigation publique.
       grotesque: Les images gores et violentes uniquement en Content Warning.
       trolling: Ne soyez pas méchant, violent, abjecte.
-      trolling: Ne devenez pas un troll.
+      jerking: Ne devenez pas un troll.
       reporting: Vous pouvez signaler les posts que vous jugez offensants.
       contry_law: Vous êtes dans les nuages, mais respectez les lois de votre pays.
     rules_headline: Quelles sont les règles à respecter ?

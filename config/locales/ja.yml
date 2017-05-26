@@ -13,8 +13,8 @@ ja:
     rules:
       discriminations: 人種差別、外国人差別、同性愛者差別などの差別発言は厳禁です
       pornos: 児童ポルノ、および公序良俗に反する画像の投稿は厳禁です
-      nsfw: NSFW（Not Safe For Work/職場閲覧注意）な内容は、CW（Contents Warning/閲覧警告）を挟んだ投稿のみ許可されています
-      grotesque: 残虐的、暴力的な画像は、CW（Contents Warning/閲覧警告）を挟んだ投稿のみ許可されています
+      nsfw: 公共の場での閲覧がふさわしくない画像は NSFW（職場閲覧注意）を使用して投稿してください
+      grotesque: 残虐的、暴力的な画像、他人が不快に感じると思われる内容は、CW（閲覧警告）を使用してください
       trolling: 荒らし行為や喧嘩はやめましょう
       jerking: 独りよがりな振る舞いをしないよう、心がけてください
       reporting: 不適切な投稿だと思ったものは、運営に報告してください

@@ -1,7 +1,7 @@
 ---
 en:
   about:
-    about_mastodon: <p><em>Mastonon</em> = Mastodon + anon</p><p>Mastonon is a SNS compatible with GNU OpenSocial built by Mastodon. This instance is operated by Japanese person. The administrator can view your e-mail address when you join to instance. but the administrator will not use by private, or provide it to a third party without permission.</p><p>Currently, this instance is personal use for experimental use. You cannot join here. If you want join to Mastodon, <a href="https://instances.mastodon.xyz/list">you can find here for other instances</a>.</p>
+    about_mastodon: <p><em>Mastonon</em> = Mastodon + anon</p><p>Mastonon is a SNS compatible with GNU OpenSocial built by Mastodon. Mastodon is a distributed platform, and you can enjoy it regardless of which instance you register. Please choose a trusted instance when registering.</p><p>This instance is operated by Japanese person. The administrator can view your e-mail address when you join to instance. But the administrator will not use by private, or provide it to a third party without permission.</p>
     about_this: About this instance
     apps: Apps
     business_email: 'Business e-mail:'
@@ -10,6 +10,16 @@ en:
     description_headline: What is %{domain}?
     domain_count_after: other instances
     domain_count_before: Connected to
+    rules:
+      discriminations: Racism, xenophobia, homophobia are strictly prohibited.
+      pornos: Immoral and indecent child pics are strictly prohibited.
+      nsfw: Must be use NSFW for images that are not suitable for public browsing.
+      grotesque: Grotesque, bloody, violent pictures, and what feel to be contents to others must be used in Content Warning.
+      trolling: Don't be a troll, Don't be a bully.
+      jerking: Don't be a jerk, please.
+      reporting: You can report every post you judge offensive.
+      contry_law: We are in the cloud but respect your own country law.
+    rules_headline: What are the rules ?
     features:
       api: Open API for apps and services
       blocks: Rich block and muting tools

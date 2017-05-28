@@ -1,7 +1,7 @@
 ---
 ja:
   about:
-    about_mastodon: <p><ruby><em>Mastonon</em><rp>(</rp><rt>マストノン</rt><rp>)</rp></ruby>は "マストドン" と "あのん" を組み合わせた造語です。</p><p>Mastononは<em>Mastodon (マストドン)</em>によって構築された GNU OpenSocial に対応したSNSです。Mastodonは分散型プラットフォームとなっており、どのインスタンスで登録しても楽しむことができます。登録する際は信頼できるインスタンスを選択してください。</p><p>当院スタンスは日本人によって運用されており、アカウント登録に使用するメールアドレスは管理者によって閲覧可能ですが、登録された情報を管理者が私的に利用したり、無許可で第三者に提供するようなことは致しません。</p>
+    about_mastodon: <p><ruby><em>Mastonon</em><rp>(</rp><rt>マストノン</rt><rp>)</rp></ruby>は "マストドン" と "あのん" を組み合わせた造語です。</p><p>Mastononは<em>Mastodon (マストドン)</em>によって構築された GNU OpenSocial に対応したSNSです。Mastodonは分散型プラットフォームとなっており、どのインスタンスで登録しても楽しむことができます。登録する際は信頼できるインスタンスを選択してください。</p><p>当インスタンスは日本人によって運用されており、アカウント登録に使用するメールアドレスは管理者によって閲覧可能ですが、登録された情報を管理者が私的に利用したり、無許可で第三者に提供するようなことは致しません。</p>
     about_this: このインスタンスについて
     apps: アプリ
     business_email: 'ビジネスメールアドレス:'
@@ -10,6 +10,16 @@ ja:
     description_headline: "%{domain} とは？"
     domain_count_after: 個のインスタンス
     domain_count_before: 接続中
+    rules:
+      discriminations: 人種差別、外国人差別、同性愛者差別などの差別発言は厳禁です
+      pornos: 児童ポルノ、および公序良俗に反する画像の投稿は厳禁です
+      nsfw: 公共の場での閲覧がふさわしくない画像は NSFW（職場閲覧注意）を使用して投稿してください
+      grotesque: 残虐的、暴力的な画像、他人が不快に感じると思われる内容は、CW（閲覧警告）を使用してください
+      trolling: 荒らし行為や喧嘩はやめましょう
+      jerking: 独りよがりな振る舞いをしないよう、心がけてください
+      reporting: 不適切な投稿だと思ったものは、運営に報告してください
+      contry_law: Mastonon はインターネット上にありますが、自国の法律を遵守しましょう
+    rules_headline: Mastonon 上のルール
     features:
       api: アプリやその他サービスにAPIを公開
       blocks: 豊富なブロックやミュート機能

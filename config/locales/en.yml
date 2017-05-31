@@ -1,7 +1,7 @@
 ---
 en:
   about:
-    about_mastodon: Mastodon is a <em>free, open-source</em> social network. A <em>decentralized</em> alternative to commercial platforms, it avoids the risks of a single company monopolizing your communication. Pick a server that you trust &mdash; whichever you choose, you can interact with everyone else. Anyone can run their own Mastodon instance and participate in the <em>social network</em> seamlessly.
+    about_mastodon: <p><em>Mastonon</em> = Mastodon + anon</p><p>Mastonon is a SNS compatible with GNU OpenSocial built by Mastodon. Mastodon is a distributed platform, and you can enjoy it regardless of which instance you register. Please choose a trusted instance when registering.</p><p>This instance is operated by Japanese person. The administrator can view your e-mail address when you join to instance. But the administrator will not use by private, or provide it to a third party without permission.</p>
     about_this: About this instance
     apps: Apps
     business_email: 'Business e-mail:'
@@ -10,6 +10,16 @@ en:
     description_headline: What is %{domain}?
     domain_count_after: other instances
     domain_count_before: Connected to
+    rules:
+      discriminations: Racism, xenophobia, homophobia are strictly prohibited.
+      pornos: Immoral and indecent child pics are strictly prohibited.
+      nsfw: Must be use NSFW for images that are not suitable for public browsing.
+      grotesque: Grotesque, bloody, violent pictures, and what feel to be contents to others must be used in Content Warning.
+      trolling: Don't be a troll, Don't be a bully.
+      jerking: Don't be a jerk, please.
+      reporting: You can report every post you judge offensive.
+      contry_law: We are in the cloud but respect your own country law.
+    rules_headline: What are the rules ?
     features:
       api: Open API for apps and services
       blocks: Rich block and muting tools
@@ -158,6 +168,10 @@ en:
       view: View
     settings:
       click_to_edit: Click to edit
+      nsfw:
+        'true': NSFW ON
+        'false': NSFW OFF
+      are_you_sure: Are you sure?
       contact_information:
         email: Enter a public e-mail address
         label: Contact information
@@ -228,6 +242,7 @@ en:
     '422':
       content: Security verification failed. Are you blocking cookies?
       title: Security verification failed
+    '429': Throttled
   exports:
     blocks: You block
     csv: CSV
@@ -310,7 +325,6 @@ en:
     preferences: Preferences
     settings: Settings
     two_factor_authentication: Two-factor Authentication
-    qiita_authorizations: Qiita Authorizations
   statuses:
     open_in_web: Open in web
     over_character_limit: character limit of %{max} exceeded

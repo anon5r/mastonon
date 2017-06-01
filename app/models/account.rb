@@ -40,6 +40,12 @@
 
 
 class Account < ApplicationRecord
+  include AccountAvatar
+  include AccountFinderConcern
+  include AccountHeader
+  include AccountInteractions
+  include Attachmentable
+  include Remotable
   include Targetable
 
   MENTION_RE = /(?:^|[^\/\w])@([a-z0-9_]+(?:@[a-z0-9\.\-]+[a-z0-9]+)?)/i
@@ -288,7 +294,7 @@ class Account < ApplicationRecord
       nil
     end
 
-    def triadic_closures(account, limit = 5)
+    def triadic_closures(account, limit: 5, offset: 0)
       sql = <<-SQL.squish
         WITH first_degree AS (
             SELECT target_account_id

@@ -38,7 +38,6 @@
 #  last_webfingered_at     :datetime
 #
 
-
 class Account < ApplicationRecord
   include AccountAvatar
   include AccountFinderConcern
@@ -53,25 +52,17 @@ class Account < ApplicationRecord
 
   # Local users
   has_one :user, inverse_of: :account
+
   validates :username, presence: true, format: { with: /\A[a-z0-9_]+\z/i }, uniqueness: { scope: :domain, case_sensitive: false }, length: { maximum: 30 }, if: 'local?'
   validates :username, presence: true, uniqueness: { scope: :domain, case_sensitive: true }, unless: 'local?'
   validates_with ReservedUsernameValidator, if: 'local?', on: :create
 
-  # Avatar upload
-  has_attached_file :avatar, styles: ->(f) { avatar_styles(f) }, convert_options: { all: '-quality 80 -strip' }
-  validates_attachment_content_type :avatar, content_type: IMAGE_MIME_TYPES
-  validates_attachment_size :avatar, less_than: 2.megabytes
-
-  # Header upload
-  has_attached_file :header, styles: ->(f) { header_styles(f) }, convert_options: { all: '-quality 80 -strip' }
-  validates_attachment_content_type :header, content_type: IMAGE_MIME_TYPES
-  validates_attachment_size :header, less_than: 2.megabytes
-
-  before_post_process :set_file_extensions
-
-  # Local user profile validations
-  validates :display_name, length: { maximum: 30 }, if: 'local?'
-  validates :note, length: { maximum: 160 }, if: 'local?'
+  # Local user validations
+  with_options if: :local? do
+    validates :username, format: { with: /\A[a-z0-9_]+\z/i }, uniqueness: { scope: :domain, case_sensitive: false }, length: { maximum: 30 }
+    validates :display_name, length: { maximum: 30 }
+    validates :note, length: { maximum: 160 }
+  end
 
   # Timelines
   has_many :stream_entries, inverse_of: :account, dependent: :destroy
@@ -79,25 +70,6 @@ class Account < ApplicationRecord
   has_many :favourites, inverse_of: :account, dependent: :destroy
   has_many :mentions, inverse_of: :account, dependent: :destroy
   has_many :notifications, inverse_of: :account, dependent: :destroy
-
-  # Follow relations
-  has_many :follow_requests, dependent: :destroy
-
-  has_many :active_relationships,  class_name: 'Follow', foreign_key: 'account_id',        dependent: :destroy
-  has_many :passive_relationships, class_name: 'Follow', foreign_key: 'target_account_id', dependent: :destroy
-
-  has_many :following, -> { order('follows.id desc') }, through: :active_relationships,  source: :target_account
-  has_many :followers, -> { order('follows.id desc') }, through: :passive_relationships, source: :account
-
-  # Block relationships
-  has_many :block_relationships, class_name: 'Block', foreign_key: 'account_id', dependent: :destroy
-  has_many :blocking, -> { order('blocks.id desc') }, through: :block_relationships, source: :target_account
-  has_many :blocked_by_relationships, class_name: 'Block', foreign_key: :target_account_id, dependent: :destroy
-  has_many :blocked_by, -> { order('blocks.id desc') }, through: :blocked_by_relationships, source: :account
-
-  # Mute relationships
-  has_many :mute_relationships, class_name: 'Mute', foreign_key: 'account_id', dependent: :destroy
-  has_many :muting, -> { order('mutes.id desc') }, through: :mute_relationships, source: :target_account
 
   # Media
   has_many :media_attachments, dependent: :destroy
@@ -120,6 +92,8 @@ class Account < ApplicationRecord
   scope :recent, -> { reorder(id: :desc) }
   scope :alphabetic, -> { order(domain: :asc, username: :asc) }
   scope :by_domain_accounts, -> { group(:domain).select(:domain, 'COUNT(*) AS accounts_count').order('accounts_count desc') }
+  scope :matches_username, ->(value) { where(arel_table[:username].matches("#{value}%")) }
+  scope :matches_display_name, ->(value) { where(arel_table[:display_name].matches("#{value}%")) }
 
   delegate :email,
     :current_sign_in_ip,
@@ -129,48 +103,7 @@ class Account < ApplicationRecord
     prefix: true,
     allow_nil: true
 
-  def follow!(other_account)
-    active_relationships.where(target_account: other_account).first_or_create!(target_account: other_account)
-  end
-
-  def block!(other_account)
-    block_relationships.where(target_account: other_account).first_or_create!(target_account: other_account)
-  end
-
-  def mute!(other_account)
-    mute_relationships.where(target_account: other_account).first_or_create!(target_account: other_account)
-  end
-
-  def unfollow!(other_account)
-    follow = active_relationships.find_by(target_account: other_account)
-    follow&.destroy
-  end
-
-  def unblock!(other_account)
-    block = block_relationships.find_by(target_account: other_account)
-    block&.destroy
-  end
-
-  def unmute!(other_account)
-    mute = mute_relationships.find_by(target_account: other_account)
-    mute&.destroy
-  end
-
-  def following?(other_account)
-    following.include?(other_account)
-  end
-
-  def blocking?(other_account)
-    blocking.include?(other_account)
-  end
-
-  def muting?(other_account)
-    muting.include?(other_account)
-  end
-
-  def requested?(other_account)
-    follow_requests.where(target_account: other_account).exists?
-  end
+  delegate :filtered_languages, to: :user, prefix: false, allow_nil: true
 
   def local?
     domain.nil?
@@ -212,7 +145,7 @@ class Account < ApplicationRecord
     OStatus2::Subscription.new(remote_url, secret: secret, lease_seconds: 86_400 * 30, webhook: webhook_url, hub: hub_url)
   end
 
-  def save_with_optional_avatar!
+  def save_with_optional_media!
     save!
   rescue ActiveRecord::RecordInvalid
     self.avatar              = nil
@@ -271,6 +204,11 @@ class Account < ApplicationRecord
   def excluded_from_timeline_account_ids
     Rails.cache.fetch("exclude_account_ids_for:#{id}") { blocking.pluck(:target_account_id) + blocked_by.pluck(:account_id) + muting.pluck(:target_account_id) }
   end
+
+  def excluded_from_timeline_domains
+    Rails.cache.fetch("exclude_domains_for:#{id}") { domain_blocks.pluck(:domain) }
+  end
+
 
   class << self
     def find_local!(username)

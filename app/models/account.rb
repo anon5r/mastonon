@@ -98,6 +98,7 @@ class Account < ApplicationRecord
   delegate :email,
     :current_sign_in_ip,
     :current_sign_in_at,
+    :locale,
     :confirmed?,
     to: :user,
     prefix: true,

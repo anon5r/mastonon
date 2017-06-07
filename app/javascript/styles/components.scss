@@ -506,15 +506,15 @@
     }
 
     .fa {
-      color: lighten($ui-base-color, 30%);
+      color: darken($ui-base-color, 30%);
     }
   }
 
   .status__content__spoiler-link {
-    background: lighten($ui-base-color, 30%);
+    background: darken($ui-base-color, 30%);
 
     &:hover {
-      background: lighten($ui-base-color, 33%);
+      background: darken($ui-base-color, 33%);
       text-decoration: none;
     }
   }

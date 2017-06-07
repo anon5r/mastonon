@@ -2,9 +2,10 @@
   .wrapper {
     max-width: 600px;
     margin: 20px auto 0;
-    color: $ui-primary-color;
+    color: $white;
     padding: 30px 50px 50px;
     background: rgba(lighten($black, 10%),0.8);
+    border-radius: 10px;
 
     &.thicc {
       max-width: 800px;
@@ -32,7 +33,7 @@
     line-height: 28px;
     font-weight: 400;
     margin-bottom: 20px;
-    color: $primary-text-color;
+    color: lighten($white, 5%);
   }
 
   h3 {
@@ -155,7 +156,7 @@
       font-weight: 500;
       font-size: 32px;
       line-height: 48px;
-      color: $primary-text-color;
+      color: $classic-base-color;
     }
   }
 

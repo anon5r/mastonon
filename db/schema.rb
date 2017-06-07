@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170520145338) do
+ActiveRecord::Schema.define(version: 20170606113804) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "account_domain_blocks", force: :cascade do |t|
+  create_table "account_domain_blocks", id: :serial, force: :cascade do |t|
     t.integer "account_id"
     t.string "domain"
     t.datetime "created_at", null: false
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["account_id", "domain"], name: "index_account_domain_blocks_on_account_id_and_domain", unique: true
   end
 
-  create_table "accounts", force: :cascade do |t|
+  create_table "accounts", id: :serial, force: :cascade do |t|
     t.string "username", default: "", null: false
     t.string "domain"
     t.string "secret", default: "", null: false
@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["username", "domain"], name: "index_accounts_on_username_and_domain", unique: true
   end
 
-  create_table "blocks", force: :cascade do |t|
+  create_table "blocks", id: :serial, force: :cascade do |t|
     t.integer "account_id", null: false
     t.integer "target_account_id", null: false
     t.datetime "created_at", null: false
@@ -71,7 +71,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["account_id", "target_account_id"], name: "index_blocks_on_account_id_and_target_account_id", unique: true
   end
 
-  create_table "conversation_mutes", force: :cascade do |t|
+  create_table "conversation_mutes", id: :serial, force: :cascade do |t|
     t.integer "account_id", null: false
     t.bigint "conversation_id", null: false
     t.index ["account_id", "conversation_id"], name: "index_conversation_mutes_on_account_id_and_conversation_id", unique: true
@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["uri"], name: "index_conversations_on_uri", unique: true
   end
 
-  create_table "domain_blocks", force: :cascade do |t|
+  create_table "domain_blocks", id: :serial, force: :cascade do |t|
     t.string "domain", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["domain"], name: "index_domain_blocks_on_domain", unique: true
   end
 
-  create_table "favourites", force: :cascade do |t|
+  create_table "favourites", id: :serial, force: :cascade do |t|
     t.integer "account_id", null: false
     t.integer "status_id", null: false
     t.datetime "created_at", null: false
@@ -102,7 +102,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["status_id"], name: "index_favourites_on_status_id"
   end
 
-  create_table "follow_requests", force: :cascade do |t|
+  create_table "follow_requests", id: :serial, force: :cascade do |t|
     t.integer "account_id", null: false
     t.integer "target_account_id", null: false
     t.datetime "created_at", null: false
@@ -110,7 +110,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["account_id", "target_account_id"], name: "index_follow_requests_on_account_id_and_target_account_id", unique: true
   end
 
-  create_table "follows", force: :cascade do |t|
+  create_table "follows", id: :serial, force: :cascade do |t|
     t.integer "account_id", null: false
     t.integer "target_account_id", null: false
     t.datetime "created_at", null: false
@@ -118,7 +118,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["account_id", "target_account_id"], name: "index_follows_on_account_id_and_target_account_id", unique: true
   end
 
-  create_table "imports", force: :cascade do |t|
+  create_table "imports", id: :serial, force: :cascade do |t|
     t.integer "account_id", null: false
     t.integer "type", null: false
     t.boolean "approved"
@@ -130,7 +130,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.datetime "data_updated_at"
   end
 
-  create_table "media_attachments", force: :cascade do |t|
+  create_table "media_attachments", id: :serial, force: :cascade do |t|
     t.bigint "status_id"
     t.string "file_file_name"
     t.string "file_content_type"
@@ -143,11 +143,12 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.string "shortcode"
     t.integer "type", default: 0, null: false
     t.json "file_meta"
+    t.index ["account_id"], name: "index_media_attachments_on_account_id"
     t.index ["shortcode"], name: "index_media_attachments_on_shortcode", unique: true
     t.index ["status_id"], name: "index_media_attachments_on_status_id"
   end
 
-  create_table "mentions", force: :cascade do |t|
+  create_table "mentions", id: :serial, force: :cascade do |t|
     t.integer "account_id"
     t.bigint "status_id"
     t.datetime "created_at", null: false
@@ -156,7 +157,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["status_id"], name: "index_mentions_on_status_id"
   end
 
-  create_table "mutes", force: :cascade do |t|
+  create_table "mutes", id: :serial, force: :cascade do |t|
     t.integer "account_id", null: false
     t.integer "target_account_id", null: false
     t.datetime "created_at", null: false
@@ -164,7 +165,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["account_id", "target_account_id"], name: "index_mutes_on_account_id_and_target_account_id", unique: true
   end
 
-  create_table "notifications", force: :cascade do |t|
+  create_table "notifications", id: :serial, force: :cascade do |t|
     t.integer "account_id"
     t.bigint "activity_id"
     t.string "activity_type"
@@ -175,7 +176,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["activity_id", "activity_type"], name: "index_notifications_on_activity_id_and_activity_type"
   end
 
-  create_table "oauth_access_grants", force: :cascade do |t|
+  create_table "oauth_access_grants", id: :serial, force: :cascade do |t|
     t.integer "resource_owner_id", null: false
     t.integer "application_id", null: false
     t.string "token", null: false
@@ -187,7 +188,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["token"], name: "index_oauth_access_grants_on_token", unique: true
   end
 
-  create_table "oauth_access_tokens", force: :cascade do |t|
+  create_table "oauth_access_tokens", id: :serial, force: :cascade do |t|
     t.integer "resource_owner_id"
     t.integer "application_id"
     t.string "token", null: false
@@ -201,7 +202,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["token"], name: "index_oauth_access_tokens_on_token", unique: true
   end
 
-  create_table "oauth_applications", force: :cascade do |t|
+  create_table "oauth_applications", id: :serial, force: :cascade do |t|
     t.string "name", null: false
     t.string "uid", null: false
     t.string "secret", null: false
@@ -214,7 +215,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
-  create_table "preview_cards", force: :cascade do |t|
+  create_table "preview_cards", id: :serial, force: :cascade do |t|
     t.bigint "status_id"
     t.string "url", default: "", null: false
     t.string "title"
@@ -236,7 +237,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["status_id"], name: "index_preview_cards_on_status_id", unique: true
   end
 
-  create_table "reports", force: :cascade do |t|
+  create_table "reports", id: :serial, force: :cascade do |t|
     t.integer "account_id", null: false
     t.integer "target_account_id", null: false
     t.bigint "status_ids", default: [], null: false, array: true
@@ -249,7 +250,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["target_account_id"], name: "index_reports_on_target_account_id"
   end
 
-  create_table "settings", force: :cascade do |t|
+  create_table "settings", id: :serial, force: :cascade do |t|
     t.string "var", null: false
     t.text "value"
     t.string "thing_type"
@@ -292,7 +293,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["tag_id", "status_id"], name: "index_statuses_tags_on_tag_id_and_status_id", unique: true
   end
 
-  create_table "stream_entries", force: :cascade do |t|
+  create_table "stream_entries", id: :serial, force: :cascade do |t|
     t.integer "account_id"
     t.bigint "activity_id"
     t.string "activity_type"
@@ -303,7 +304,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["activity_id", "activity_type"], name: "index_stream_entries_on_activity_id_and_activity_type"
   end
 
-  create_table "subscriptions", force: :cascade do |t|
+  create_table "subscriptions", id: :serial, force: :cascade do |t|
     t.string "callback_url", default: "", null: false
     t.string "secret"
     t.datetime "expires_at"
@@ -315,15 +316,15 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["account_id", "callback_url"], name: "index_subscriptions_on_account_id_and_callback_url", unique: true
   end
 
-  create_table "tags", force: :cascade do |t|
+  create_table "tags", id: :serial, force: :cascade do |t|
     t.string "name", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index "to_tsvector('simple'::regconfig, (name)::text)", name: "hashtag_search_index", using: :gin
+    t.index "name text_pattern_ops", name: "hashtag_search_index"
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :serial, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.integer "account_id", null: false
     t.datetime "created_at", null: false
@@ -358,7 +359,7 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "web_settings", force: :cascade do |t|
+  create_table "web_settings", id: :serial, force: :cascade do |t|
     t.integer "user_id"
     t.json "data"
     t.datetime "created_at", null: false
@@ -366,5 +367,42 @@ ActiveRecord::Schema.define(version: 20170520145338) do
     t.index ["user_id"], name: "index_web_settings_on_user_id", unique: true
   end
 
+  add_foreign_key "account_domain_blocks", "accounts", on_delete: :cascade
+  add_foreign_key "blocks", "accounts", column: "target_account_id", on_delete: :cascade
+  add_foreign_key "blocks", "accounts", on_delete: :cascade
+  add_foreign_key "conversation_mutes", "accounts", on_delete: :cascade
+  add_foreign_key "conversation_mutes", "conversations", on_delete: :cascade
+  add_foreign_key "favourites", "accounts", on_delete: :cascade
+  add_foreign_key "favourites", "statuses", on_delete: :cascade
+  add_foreign_key "follow_requests", "accounts", column: "target_account_id", on_delete: :cascade
+  add_foreign_key "follow_requests", "accounts", on_delete: :cascade
+  add_foreign_key "follows", "accounts", column: "target_account_id", on_delete: :cascade
+  add_foreign_key "follows", "accounts", on_delete: :cascade
+  add_foreign_key "imports", "accounts", on_delete: :cascade
+  add_foreign_key "media_attachments", "accounts", on_delete: :nullify
+  add_foreign_key "media_attachments", "statuses", on_delete: :nullify
+  add_foreign_key "mentions", "accounts", on_delete: :cascade
+  add_foreign_key "mentions", "statuses", on_delete: :cascade
+  add_foreign_key "mutes", "accounts", column: "target_account_id", on_delete: :cascade
+  add_foreign_key "mutes", "accounts", on_delete: :cascade
+  add_foreign_key "notifications", "accounts", column: "from_account_id", on_delete: :cascade
+  add_foreign_key "notifications", "accounts", on_delete: :cascade
+  add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id", on_delete: :cascade
+  add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id", on_delete: :cascade
+  add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id", on_delete: :cascade
+  add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id", on_delete: :cascade
+  add_foreign_key "preview_cards", "statuses", on_delete: :cascade
+  add_foreign_key "reports", "accounts", column: "action_taken_by_account_id", on_delete: :nullify
+  add_foreign_key "reports", "accounts", column: "target_account_id", on_delete: :cascade
+  add_foreign_key "reports", "accounts", on_delete: :cascade
+  add_foreign_key "statuses", "accounts", column: "in_reply_to_account_id", on_delete: :nullify
+  add_foreign_key "statuses", "accounts", on_delete: :cascade
+  add_foreign_key "statuses", "statuses", column: "in_reply_to_id", on_delete: :nullify
   add_foreign_key "statuses", "statuses", column: "reblog_of_id", on_delete: :cascade
+  add_foreign_key "statuses_tags", "statuses", on_delete: :cascade
+  add_foreign_key "statuses_tags", "tags", on_delete: :cascade
+  add_foreign_key "stream_entries", "accounts", on_delete: :cascade
+  add_foreign_key "subscriptions", "accounts", on_delete: :cascade
+  add_foreign_key "users", "accounts", on_delete: :cascade
+  add_foreign_key "web_settings", "users", on_delete: :cascade
 end

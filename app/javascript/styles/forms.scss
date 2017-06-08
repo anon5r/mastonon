@@ -240,7 +240,7 @@ code {
   text-align: center;
 
   a {
-    color: $primary-text-color;
+    color: lighten($primary-text-color, 60%);
     text-decoration: none;
 
     &:hover {

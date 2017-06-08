@@ -381,6 +381,12 @@ RSpec.describe Account, type: :model do
       expect(account_2).to model_have_error_on_field(:username)
     end
 
+    it 'is invalid if the username is reserved' do
+      account = Fabricate.build(:account, username: 'support')
+      account.valid?
+      expect(account).to model_have_error_on_field(:username)
+    end
+
     context 'when is local' do
       it 'is invalid if the username doesn\'t only contains letters, numbers and underscores' do
         account = Fabricate.build(:account, username: 'the-doctor')
@@ -392,20 +398,6 @@ RSpec.describe Account, type: :model do
         account = Fabricate.build(:account, username: Faker::Lorem.characters(31))
         account.valid?
         expect(account).to model_have_error_on_field(:username)
-      end
-
-      it 'is invalid if the username is reserved' do
-        account = Fabricate.build(:account, username: 'qiitan')
-        account.valid?
-        expect(account).to model_have_error_on_field(:username)
-      end
-    end
-
-    context 'when is not local' do
-      it 'is valid although the username is reserved' do
-        account = Fabricate.build(:account, username: 'qiitan', domain: Faker::Internet.domain_name)
-        account.valid?
-        expect(account).not_to model_have_error_on_field(:username)
       end
     end
   end

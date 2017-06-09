@@ -110,7 +110,7 @@
       line-height: 36px;
 
       a {
-        color: $ui-primary-color;
+        color: lighten($ui-primary-color,20%);
         text-decoration: underline;
       }
     }
@@ -360,7 +360,7 @@
       text-align: center;
 
       a {
-        color: lighten($ui-secondary-color, 30%);
+        color: lighten($ui-secondary-color, 20%);
       }
     }
   }

@@ -110,11 +110,11 @@ code {
     background: transparent;
     box-sizing: border-box;
     border: 0;
-    border-bottom: 2px solid $ui-primary-color;
+    border-bottom: 2px solid $ui-base-color;
     border-radius: 2px 2px 0 0;
     padding: 7px 4px;
     font-size: 16px;
-    color: $primary-text-color;
+    color: $white;
     display: block;
     width: 100%;
     outline: 0;
@@ -253,7 +253,7 @@ code {
 .follow-prompt {
   margin-bottom: 30px;
   text-align: center;
-  color: $ui-primary-color;
+  color: $classic-base-color;
 
   h2 {
     font-size: 16px;
@@ -261,7 +261,7 @@ code {
   }
 
   strong {
-    color: $ui-secondary-color;
+    color: lighten($ui-secondary-color, 25%);
     font-weight: 500;
   }
 }
@@ -272,7 +272,7 @@ code {
 
 .qr-code {
   flex: 0 0 auto;
-  background: $simple-background-color;
+  background: #fff;
   padding: 4px;
   margin-bottom: 20px;
   box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);

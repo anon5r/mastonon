@@ -60,7 +60,16 @@ class NotifyService < BaseService
   def create_notification
     @notification.save!
     return unless @notification.browserable?
-    Redis.current.publish("timeline:#{@recipient.id}", Oj.dump(event: :notification, payload: InlineRenderer.render(@notification, @recipient, 'api/v1/notifications/show')))
+    Redis.current.publish("timeline:#{@recipient.id}", Oj.dump(event: :notification, payload: InlineRenderer.render(@notification, @recipient, :notification)))
+    send_push_notifications
+  end
+
+  def send_push_notifications
+    sessions_with_subscriptions_ids = @recipient.user.session_activations.where.not(web_push_subscription: nil).pluck(:id)
+
+    WebPushNotificationWorker.push_bulk(sessions_with_subscriptions_ids) do |session_activation_id|
+      [session_activation_id, @notification.id]
+    end
   end
 
   def send_email

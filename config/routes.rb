@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     confirmations:      'auth/confirmations',
   }
 
-  get '/users/:username', to: redirect('/@%{username}'), constraints: lambda { |req| req.format.nil? }
+  get '/users/:username', to: redirect('/@%{username}'), constraints: lambda { |req| req.format.nil? || req.format.html? }
 
   resources :accounts, path: 'users', only: [:show], param: :username do
     resources :stream_entries, path: 'updates', only: [:show] do
@@ -74,6 +74,8 @@ Rails.application.routes.draw do
 
     resource :follower_domains, only: [:show, :update]
     resource :delete, only: [:show, :destroy]
+
+    resources :sessions, only: [:destroy]
   end
 
   resources :media, only: [:show]
@@ -86,7 +88,12 @@ Rails.application.routes.draw do
     resources :subscriptions, only: [:index]
     resources :domain_blocks, only: [:index, :new, :create, :show, :destroy]
     resource :settings, only: [:edit, :update]
-    resources :instances, only: [:index]
+    
+    resources :instances, only: [:index] do
+      collection do
+        post :resubscribe
+      end
+    end
 
     resources :reports, only: [:index, :show, :update] do
       resources :reported_statuses, only: [:create, :update, :destroy]

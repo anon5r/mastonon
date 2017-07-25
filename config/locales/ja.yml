@@ -3,7 +3,6 @@ ja:
   about:
     about_mastodon_html: <p><ruby><em>Mastonon</em><rp>(</rp><rt>マストノン</rt><rp>)</rp></ruby>は "マストドン" と "あのん" を組み合わせた造語です。</p><p>Mastononは<em>Mastodon (マストドン)</em>によって構築された GNU OpenSocial に対応したSNSです。Mastodonは分散型プラットフォームとなっており、どのインスタンスで登録しても楽しむことができます。登録する際は信頼できるインスタンスを選択してください。</p><p>当インスタンスは日本人によって運用されており、アカウント登録に使用するメールアドレスは管理者によって閲覧可能ですが、登録された情報を管理者が私的に利用したり、無許可で第三者に提供するようなことは致しません。</p>
     about_this: このインスタンスについて
-    business_email: 'ビジネスメールアドレス:'
     closed_registrations: 現在このインスタンスでの新規登録は受け付けていません。しかし、他のインスタンスにアカウントを作成しても全く同じネットワークに参加することができます。
     contact: 連絡先
     description_headline: "%{domain} とは？"
@@ -28,18 +27,14 @@ ja:
       within_reach_title: いつでも身近に
     find_another_instance: 他のインスタンスを探す
     generic_description: "%{domain} は、Mastodon インスタンスの一つです。"
-    get_started: 参加する
     hosted_on: Mastodon hosted on %{domain}
     learn_more: もっと詳しく
-    links: リンク
     other_instances: 他のインスタンス
     source_code: ソースコード
     status_count_after: トゥート
     status_count_before: トゥート数
-    terms: プライバシーポリシー
     user_count_after: 人
     user_count_before: ユーザー数
-    version: バージョン
     what_is_mastodon: Mastodon とは？
   accounts:
     follow: フォロー
@@ -206,8 +201,8 @@ ja:
         show: メディアを表示
         title: メディア
       no_media: メディアなし
-      with_media: メディアあり
       title: トゥート一覧
+      with_media: メディアあり
     subscriptions:
       callback_url: コールバックURL
       confirmed: 確認済み
@@ -280,7 +275,7 @@ ja:
       content: セキュリティ認証に失敗しました。Cookieをブロックしていませんか？
       title: セキュリティ認証に失敗
     '429': リクエストの制限に達しました。
-    noscript: Mastodonを利用する場合はJavaScriptを有効にしてください。
+    noscript: Mastodonのウェブアプリケーションを利用する場合はJavaScriptを有効にしてください。またはあなたのプラットフォーム向けのMastodonネイティブアプリを探すことができます。
   exports:
     blocks: ブロック
     csv: CSV
@@ -353,12 +348,12 @@ ja:
     favourite:
       title: あなたのトゥートが %{name} さんにお気に入り登録されました
     follow:
-      title: '%{name} さんにフォローされました'
+      title: "%{name} さんにフォローされました"
     mention:
       action_boost: ブースト
       action_expand: もっと見る
       action_favourite: お気に入り
-      title: '%{name} さんから返信がありました'
+      title: "%{name} さんから返信がありました"
     reblog:
       title: あなたのトゥートが %{name} さんにブーストされました
     subscribed:
@@ -500,7 +495,7 @@ ja:
 
       <p>この文章のライセンスはCC-BY-SAです。このページは2017年5月6日が最終更新です。</p>
 
-      <p>オリジナルの出典 <a href="https://github.com/discourse/discourse">Discourse privacy policy</a>.
+      <p>オリジナルの出典 <a href="https://github.com/discourse/discourse">Discourse privacy policy</a>.</p>
     title: "%{instance} 利用規約・プライバシーポリシー"
   time:
     formats:

@@ -2,20 +2,33 @@
 ja:
   about:
     about_mastodon_html: <p><ruby><em>Mastonon</em><rp>(</rp><rt>マストノン</rt><rp>)</rp></ruby>は "マストドン" と "あのん" を組み合わせた造語です。</p><p>Mastononは<em>Mastodon (マストドン)</em>によって構築された GNU OpenSocial に対応したSNSです。Mastodonは分散型プラットフォームとなっており、どのインスタンスで登録しても楽しむことができます。登録する際は信頼できるインスタンスを選択してください。</p><p>当インスタンスは日本人によって運用されており、アカウント登録に使用するメールアドレスは管理者によって閲覧可能ですが、登録された情報を管理者が私的に利用したり、無許可で第三者に提供するようなことは致しません。</p>
-    about_this: このインスタンスについて
+    about_this: 詳細情報
     closed_registrations: 現在このインスタンスでの新規登録は受け付けていません。しかし、他のインスタンスにアカウントを作成しても全く同じネットワークに参加することができます。
     contact: 連絡先
+    contact_missing: 未設定
+    contact_unavailable: N/A
     description_headline: "%{domain} とは？"
     domain_count_after: 個のインスタンス
     domain_count_before: 接続中
-    rules:
-      about_media_title: 画像/動画の投稿について
-      about_media_body: 公共の場での閲覧がふさわしくない画像は NSFW（職場閲覧注意）を使用したり、残虐的、暴力的な画像、他人が不快に感じると思われる内容は、CW（閲覧警告）を使用してください。また、児童ポルノおよび公序良俗に反する画像および動画の投稿は厳禁です。
-      prohibites_title: 禁止行為
-      prohibites_body: 荒らし行為やスパム、botによる大量投稿は禁止です。人種差別、外国人差別、同性愛者差別などの差別発言は厳禁です。また、喧嘩や誹謗中傷はオンライン上で行うには向きません。独りよがりな振る舞いをしないよう、心がけてください。Mastonon はインターネット上にありますが、自国の法律を遵守しましょう
-      reporting_title: 好ましくない投稿やユーザーは報告を
-      reporting_body: 不適切な投稿を見つけたら運営に報告してください。内容を確認し、対応します。
-    rules_headline: Mastonon 上のルール
+    extended_description_html: |
+      <h3>Mastonon 上のルール</h3>
+      <div><ul class="rules-list">
+        <li class="rules-list__row">
+          <h6>画像/動画の投稿について</h6>
+          公共の場での閲覧がふさわしくない画像は NSFW（職場閲覧注意）を使用したり、残虐的、暴力的な画像、他人が不快に感じると思われる内容は、CW（閲覧警告）を使用してください。また、児童ポルノおよび公序良俗に反する画像および動画の投稿は厳禁です。
+        </li>
+        <li class="rules-list__row">
+          <h6>禁止行為</h6>
+          荒らし行為やスパム、botによる大量投稿は禁止です。人種差別、外国人差別、同性愛者差別などの差別発言は厳禁です。また、喧嘩や誹謗中傷はオンライン上で行うには向きません。独りよがりな振る舞いをしないよう、心がけてください。Mastonon はインターネット上にありますが、自国の法律を遵守しましょう
+        </li>
+        <li class="rules-list__row">
+          <h6>好ましくない投稿やユーザーは報告を</h6>
+          不適切な投稿を見つけたら運営に報告してください。内容を確認し、対応します。
+        </li>
+        <li class="rules-list__row">
+        </li>
+      </ul>
+      </div>
     features:
       humane_approach_body: 他の SNS の失敗から学び、Mastodon はソーシャルメディアが誤った使い方をされることの無いように倫理的な設計を目指しています。
       humane_approach_title: より思いやりのある設計
@@ -112,12 +125,14 @@ ja:
         hint: ドメインブロックはデータベース中のアカウント項目の作成を妨げませんが、遡って自動的に指定されたモデレーションをそれらのアカウントに適用します。
         severity:
           desc_html: "<strong>サイレンス</strong>はアカウントのトゥートをフォローしていない人から隠します。<strong>停止</strong>はそのアカウントのコンテンツ、メディア、プロフィールデータをすべて削除します。"
+          noop: なし
           silence: サイレンス
           suspend: 停止
         title: 新規ドメインブロック
       reject_media: メディアファイルを拒否
       reject_media_hint: ローカルに保存されたメディアファイルを削除し、今後のダウンロードを拒否します。停止とは無関係です。
       severities:
+        noop: なし
         silence: サイレンス
         suspend: 停止
       severity: 深刻度
@@ -208,7 +223,7 @@ ja:
       confirmed: 確認済み
       expires_in: 期限
       last_delivery: 最終配送
-      title: PubSubHubbub
+      title: WebSub
       topic: トピック
     title: 管理
   admin_mailer:
@@ -349,6 +364,8 @@ ja:
       title: あなたのトゥートが %{name} さんにお気に入り登録されました
     follow:
       title: "%{name} さんにフォローされました"
+    group:
+      title: "%{count} 件の通知"
     mention:
       action_boost: ブースト
       action_expand: もっと見る
@@ -400,10 +417,12 @@ ja:
       windows: Windows
       windows_mobile: Windows Mobile
       windows_phone: Windows Phone
+    revoke: 削除
+    revoke_success: セッションを削除しました
     title: セッション
   settings:
     authorized_apps: 認証済みアプリ
-    back: 戻る
+    back: Mastodon に戻る
     delete: アカウントの削除
     edit_profile: プロフィールを編集
     export: データのエクスポート

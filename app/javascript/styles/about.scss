@@ -36,7 +36,7 @@
     line-height: 28px;
     font-weight: 400;
     margin-bottom: 20px;
-    color: lighten($white, 5%);
+    color: $primary-text-color;
   }
 
   h3 {
@@ -45,7 +45,7 @@
     line-height: 28px;
     font-weight: 400;
     margin-bottom: 20px;
-    color: lighten($ui-secondary-color, 10%);
+    color: $ui-secondary-color;
   }
 
   ul,
@@ -110,7 +110,7 @@
       line-height: 36px;
 
       a {
-        color: lighten($ui-primary-color,20%);
+        color: $ui-secondary-color;
         text-decoration: underline;
       }
     }
@@ -189,15 +189,15 @@
       font-size: 16px;
 
       &:last-child {
-        color: lighten($ui-secondary-color, 20%);
-        font-size: 14px;      }
+        color: $ui-secondary-color;
+      }
     }
 
     strong {
       font-weight: 500;
       font-size: 32px;
       line-height: 48px;
-      color: $classic-base-color;
+      color: $primary-text-color;
     }
   }
 }
@@ -224,7 +224,7 @@
 
     a {
       display: block;
-      color: lighten($primary-text-color, 50%);
+      color: primary-text-color;
       text-decoration: none;
 
       &:hover {
@@ -236,7 +236,7 @@
 
     .username {
       display: block;
-      color: lighten($ui-primary-color, 50%);
+      color: $ui-primary-color;
     }
   }
 }
@@ -601,7 +601,7 @@
       }
 
       a {
-        color: lighten($ui-secondary-color, 20%);
+        color: $ui-secondary-color;
         text-decoration: none;
       }
     }

@@ -4,29 +4,41 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   def perform
     return if delete_arrived_first?(object_uri) || unsupported_object_type?
 
-    status = Status.find_by(uri: object_uri)
-
-    return status unless status.nil?
-
-    ApplicationRecord.transaction do
-      status = Status.create!(status_params)
-
-      process_tags(status)
-      process_attachments(status)
+    RedisLock.acquire(lock_options) do |lock|
+      if lock.acquired?
+        @status = find_existing_status
+        process_status if @status.nil?
+      end
     end
 
-    resolve_thread(status)
-    distribute(status)
-
-    status
+    @status
   end
 
   private
 
+  def process_status
+    ApplicationRecord.transaction do
+      @status = Status.create!(status_params)
+
+      process_tags(@status)
+      process_attachments(@status)
+    end
+
+    resolve_thread(@status)
+    distribute(@status)
+    forward_for_reply if @status.public_visibility? || @status.unlisted_visibility?
+  end
+
+  def find_existing_status
+    status   = status_from_uri(object_uri)
+    status ||= Status.find_by(uri: @object['atomUri']) if @object['atomUri'].present?
+    status
+  end
+
   def status_params
     {
       uri: @object['id'],
-      url: @object['url'],
+      url: object_url || @object['id'],
       account: @account,
       text: text_from_content || '',
       language: language_from_content,
@@ -36,7 +48,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       sensitive: @object['sensitive'] || false,
       visibility: visibility_from_audience,
       thread: replied_to_status,
-      conversation: conversation_from_uri(@object['_:conversation']),
+      conversation: conversation_from_uri(@object['conversation']),
     }
   end
 
@@ -49,6 +61,8 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
         process_hashtag tag, status
       when 'Mention'
         process_mention tag, status
+      when 'Emoji'
+        process_emoji tag, status
       end
     end
   end
@@ -62,9 +76,20 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def process_mention(tag, status)
     account = account_from_uri(tag['href'])
-    account = ActivityPub::FetchRemoteAccountService.new.call(tag['href']) if account.nil?
+    account = FetchRemoteAccountService.new.call(tag['href']) if account.nil?
     return if account.nil?
     account.mentions.create(status: status)
+  end
+
+  def process_emoji(tag, _status)
+    shortcode = tag['name'].delete(':')
+    emoji     = CustomEmoji.find_by(shortcode: shortcode, domain: @account.domain)
+
+    return if !emoji.nil? || skip_download?
+
+    emoji = CustomEmoji.new(domain: @account.domain, shortcode: shortcode)
+    emoji.image_remote_url = tag['href']
+    emoji.save
   end
 
   def process_attachments(status)
@@ -85,7 +110,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def resolve_thread(status)
     return unless status.reply? && status.thread.nil?
-    ActivityPub::ThreadResolveWorker.perform_async(status.id, @object['inReplyTo'])
+    ThreadResolveWorker.perform_async(status.id, in_reply_to_uri)
   end
 
   def conversation_from_uri(uri)
@@ -112,8 +137,19 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   end
 
   def replied_to_status
-    return if @object['inReplyTo'].blank?
-    @replied_to_status ||= status_from_uri(@object['inReplyTo'])
+    return @replied_to_status if defined?(@replied_to_status)
+
+    if in_reply_to_uri.blank?
+      @replied_to_status = nil
+    else
+      @replied_to_status   = status_from_uri(in_reply_to_uri)
+      @replied_to_status ||= status_from_uri(@object['inReplyToAtomUri']) if @object['inReplyToAtomUri'].present?
+      @replied_to_status
+    end
+  end
+
+  def in_reply_to_uri
+    value_or_id(@object['inReplyTo'])
   end
 
   def text_from_content
@@ -127,6 +163,16 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   def language_from_content
     return nil unless language_map?
     @object['contentMap'].keys.first
+  end
+
+  def object_url
+    return if @object['url'].blank?
+
+    value = first_of_value(@object['url'])
+
+    return value if value.is_a?(String)
+
+    value['href']
   end
 
   def language_map?
@@ -144,5 +190,18 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   def skip_download?
     return @skip_download if defined?(@skip_download)
     @skip_download ||= DomainBlock.find_by(domain: @account.domain)&.reject_media?
+  end
+
+  def reply_to_local?
+    !replied_to_status.nil? && replied_to_status.account.local?
+  end
+
+  def forward_for_reply
+    return unless @json['signature'].present? && reply_to_local?
+    ActivityPub::RawDistributionWorker.perform_async(Oj.dump(@json), replied_to_status.account_id)
+  end
+
+  def lock_options
+    { redis: Redis.current, key: "create:#{@object['id']}" }
   end
 end

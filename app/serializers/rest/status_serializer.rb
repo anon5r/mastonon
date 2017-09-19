@@ -8,6 +8,7 @@ class REST::StatusSerializer < ActiveModel::Serializer
   attribute :favourited, if: :current_user?
   attribute :reblogged, if: :current_user?
   attribute :muted, if: :current_user?
+  attribute :pinned, if: :pinnable?
 
   belongs_to :reblog, serializer: REST::StatusSerializer
   belongs_to :application
@@ -16,6 +17,7 @@ class REST::StatusSerializer < ActiveModel::Serializer
   has_many :media_attachments, serializer: REST::MediaAttachmentSerializer
   has_many :mentions
   has_many :tags
+  has_many :emojis
 
   def current_user?
     !current_user.nil?
@@ -57,6 +59,21 @@ class REST::StatusSerializer < ActiveModel::Serializer
     end
   end
 
+  def pinned
+    if instance_options && instance_options[:relationships]
+      instance_options[:relationships].pins_map[object.id] || false
+    else
+      current_user.account.pinned?(object)
+    end
+  end
+
+  def pinnable?
+    current_user? &&
+      current_user.account_id == object.account_id &&
+      !object.reblog? &&
+      %w(public unlisted).include?(object.visibility)
+  end
+
   class ApplicationSerializer < ActiveModel::Serializer
     attributes :name, :website
   end
@@ -88,6 +105,16 @@ class REST::StatusSerializer < ActiveModel::Serializer
 
     def url
       tag_url(object)
+    end
+  end
+
+  class CustomEmojiSerializer < ActiveModel::Serializer
+    include RoutingHelper
+
+    attributes :shortcode, :url
+
+    def url
+      full_asset_url(object.image.url)
     end
   end
 end

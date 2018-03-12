@@ -89,10 +89,15 @@ class ActivityPub::NoteSerializer < ActiveModel::Serializer
   class MediaAttachmentSerializer < ActiveModel::Serializer
     include RoutingHelper
 
-    attributes :type, :media_type, :url
+    attributes :type, :media_type, :url, :name
+    attribute :focal_point, if: :focal_point?
 
     def type
       'Document'
+    end
+
+    def name
+      object.description
     end
 
     def media_type
@@ -101,6 +106,14 @@ class ActivityPub::NoteSerializer < ActiveModel::Serializer
 
     def url
       object.local? ? full_asset_url(object.file.url(:original, false)) : object.remote_url
+    end
+
+    def focal_point?
+      object.file.meta.is_a?(Hash) && object.file.meta['focus'].is_a?(Hash)
+    end
+
+    def focal_point
+      [object.file.meta['focus']['x'], object.file.meta['focus']['y']]
     end
   end
 
@@ -138,21 +151,6 @@ class ActivityPub::NoteSerializer < ActiveModel::Serializer
     end
   end
 
-  class CustomEmojiSerializer < ActiveModel::Serializer
-    include RoutingHelper
-
-    attributes :type, :href, :name
-
-    def type
-      'Emoji'
-    end
-
-    def href
-      full_asset_url(object.image.url)
-    end
-
-    def name
-      ":#{object.shortcode}:"
-    end
+  class CustomEmojiSerializer < ActivityPub::EmojiSerializer
   end
 end

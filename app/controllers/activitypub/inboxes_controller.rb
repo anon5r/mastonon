@@ -9,9 +9,9 @@ class ActivityPub::InboxesController < Api::BaseController
     if signed_request_account
       upgrade_account
       process_payload
-      head 201
-    else
       head 202
+    else
+      render plain: signature_verification_failure_reason, status: 401
     end
   end
 
@@ -28,10 +28,11 @@ class ActivityPub::InboxesController < Api::BaseController
   def upgrade_account
     if signed_request_account.ostatus?
       signed_request_account.update(last_webfingered_at: nil)
-      ResolveRemoteAccountWorker.perform_async(signed_request_account.acct)
+      ResolveAccountWorker.perform_async(signed_request_account.acct)
     end
 
     Pubsubhubbub::UnsubscribeWorker.perform_async(signed_request_account.id) if signed_request_account.subscribed?
+    DeliveryFailureTracker.track_inverse_success!(signed_request_account)
   end
 
   def process_payload

@@ -15,6 +15,8 @@ import {
   CONTEXT_FETCH_SUCCESS,
   STATUS_MUTE_SUCCESS,
   STATUS_UNMUTE_SUCCESS,
+  STATUS_REVEAL,
+  STATUS_HIDE,
 } from '../actions/statuses';
 import {
   TIMELINE_REFRESH_SUCCESS,
@@ -22,9 +24,6 @@ import {
   TIMELINE_DELETE,
   TIMELINE_EXPAND_SUCCESS,
 } from '../actions/timelines';
-import {
-  ACCOUNT_BLOCK_SUCCESS,
-} from '../actions/accounts';
 import {
   NOTIFICATIONS_UPDATE,
   NOTIFICATIONS_REFRESH_SUCCESS,
@@ -38,7 +37,7 @@ import {
   PINNED_STATUSES_FETCH_SUCCESS,
 } from '../actions/pin_statuses';
 import { SEARCH_FETCH_SUCCESS } from '../actions/search';
-import emojify from '../emoji';
+import emojify from '../features/emoji/emoji';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 import escapeTextContentForBrowser from 'escape-html';
 
@@ -57,15 +56,17 @@ const normalizeStatus = (state, status) => {
     normalStatus.reblog = status.reblog.id;
   }
 
-  const searchContent = [status.spoiler_text, status.content].join(' ').replace(/<br \/>/g, '\n').replace(/<\/p><p>/g, '\n\n');
+  const searchContent = [status.spoiler_text, status.content].join('\n\n').replace(/<br\s*\/?>/g, '\n').replace(/<\/p><p>/g, '\n\n');
+
   const emojiMap = normalStatus.emojis.reduce((obj, emoji) => {
-    obj[`:${emoji.shortcode}:`] = emoji.url;
+    obj[`:${emoji.shortcode}:`] = emoji;
     return obj;
   }, {});
 
   normalStatus.search_index = domParser.parseFromString(searchContent, 'text/html').documentElement.textContent;
-  normalStatus.contentHtml = emojify(normalStatus.content, emojiMap);
-  normalStatus.spoilerHtml = emojify(escapeTextContentForBrowser(normalStatus.spoiler_text || ''), emojiMap);
+  normalStatus.contentHtml  = emojify(normalStatus.content, emojiMap);
+  normalStatus.spoilerHtml  = emojify(escapeTextContentForBrowser(normalStatus.spoiler_text || ''), emojiMap);
+  normalStatus.hidden       = normalStatus.sensitive;
 
   return state.update(status.id, ImmutableMap(), map => map.mergeDeep(fromJS(normalStatus)));
 };
@@ -84,18 +85,6 @@ const deleteStatus = (state, id, references) => {
   });
 
   return state.delete(id);
-};
-
-const filterStatuses = (state, relationship) => {
-  state.forEach(status => {
-    if (status.get('account') !== relationship.id) {
-      return;
-    }
-
-    state = deleteStatus(state, status.get('id'), state.filter(item => item.get('reblog') === status.get('id')));
-  });
-
-  return state;
 };
 
 const initialState = ImmutableMap();
@@ -125,6 +114,14 @@ export default function statuses(state = initialState, action) {
     return state.setIn([action.id, 'muted'], true);
   case STATUS_UNMUTE_SUCCESS:
     return state.setIn([action.id, 'muted'], false);
+  case STATUS_REVEAL:
+    return state.withMutations(map => {
+      action.ids.forEach(id => map.setIn([id, 'hidden'], false));
+    });
+  case STATUS_HIDE:
+    return state.withMutations(map => {
+      action.ids.forEach(id => map.setIn([id, 'hidden'], true));
+    });
   case TIMELINE_REFRESH_SUCCESS:
   case TIMELINE_EXPAND_SUCCESS:
   case CONTEXT_FETCH_SUCCESS:
@@ -137,8 +134,6 @@ export default function statuses(state = initialState, action) {
     return normalizeStatuses(state, action.statuses);
   case TIMELINE_DELETE:
     return deleteStatus(state, action.id, action.references);
-  case ACCOUNT_BLOCK_SUCCESS:
-    return filterStatuses(state, action.relationship);
   default:
     return state;
   }

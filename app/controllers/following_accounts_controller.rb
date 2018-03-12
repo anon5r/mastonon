@@ -7,10 +7,15 @@ class FollowingAccountsController < ApplicationController
     @follows = Follow.where(account: @account).recent.page(params[:page]).per(FOLLOW_PER_PAGE).preload(:target_account)
 
     respond_to do |format|
-      format.html
+      format.html do
+        @relationships = AccountRelationshipsPresenter.new(@follows.map(&:target_account_id), current_user.account_id) if user_signed_in?
+      end
 
       format.json do
-        render json: collection_presenter, serializer: ActivityPub::CollectionSerializer, adapter: ActivityPub::Adapter, content_type: 'application/activity+json'
+        render json: collection_presenter,
+               serializer: ActivityPub::CollectionSerializer,
+               adapter: ActivityPub::Adapter,
+               content_type: 'application/activity+json'
       end
     end
   end

@@ -11,7 +11,7 @@ class Api::V1::Statuses::RebloggedByAccountsController < Api::BaseController
 
   def index
     @accounts = load_accounts
-    render 'api/v1/statuses/accounts'
+    render json: @accounts, each_serializer: REST::AccountSerializer
   end
 
   private
@@ -74,6 +74,6 @@ class Api::V1::Statuses::RebloggedByAccountsController < Api::BaseController
   end
 
   def pagination_params(core_params)
-    params.permit(:limit).merge(core_params)
+    params.slice(:limit).permit(:limit).merge(core_params)
   end
 end

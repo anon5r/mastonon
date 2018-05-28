@@ -13,7 +13,7 @@ describe Settings::DeletesController do
 
       it 'renders confirmation page' do
         get :show
-        expect(response).to have_http_status(:success)
+        expect(response).to have_http_status(200)
       end
     end
 
@@ -66,6 +66,20 @@ describe Settings::DeletesController do
       it 'redirects' do
         delete :destroy
         expect(response).to redirect_to '/auth/sign_in'
+      end
+    end
+
+    context do
+      around do |example|
+        open_deletion = Setting.open_deletion
+        example.run
+        Setting.open_deletion = open_deletion
+      end
+
+      it 'redirects' do
+        Setting.open_deletion = false
+        delete :destroy
+        expect(response).to redirect_to root_path
       end
     end
   end

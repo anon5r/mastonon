@@ -10,26 +10,38 @@ class Api::V1::StatusesController < Api::BaseController
 
   respond_to :json
 
+  # This API was originally unlimited, pagination cannot be introduced without
+  # breaking backwards-compatibility. Arbitrarily high number to cover most
+  # conversations as quasi-unlimited, it would be too much work to render more
+  # than this anyway
+  CONTEXT_LIMIT = 4_096
+
   def show
     cached  = Rails.cache.read(@status.cache_key)
     @status = cached unless cached.nil?
+    render json: @status, serializer: REST::StatusSerializer
   end
 
   def context
-    ancestors_results   = @status.in_reply_to_id.nil? ? [] : @status.ancestors(current_account)
-    descendants_results = @status.descendants(current_account)
+    ancestors_results   = @status.in_reply_to_id.nil? ? [] : @status.ancestors(CONTEXT_LIMIT, current_account)
+    descendants_results = @status.descendants(CONTEXT_LIMIT, current_account)
     loaded_ancestors    = cache_collection(ancestors_results, Status)
     loaded_descendants  = cache_collection(descendants_results, Status)
 
-    @context = OpenStruct.new(ancestors: loaded_ancestors, descendants: loaded_descendants)
-    statuses = [@status] + @context[:ancestors] + @context[:descendants]
+    @context = Context.new(ancestors: loaded_ancestors, descendants: loaded_descendants)
+    statuses = [@status] + @context.ancestors + @context.descendants
 
-    set_maps(statuses)
+    render json: @context, serializer: REST::ContextSerializer, relationships: StatusRelationshipsPresenter.new(statuses, current_user&.account_id)
   end
 
   def card
-    @card = PreviewCard.find_by(status: @status)
-    render_empty if @card.nil?
+    @card = @status.preview_cards.first
+
+    if @card.nil?
+      render_empty
+    else
+      render json: @card, serializer: REST::PreviewCardSerializer
+    end
   end
 
   def create
@@ -43,7 +55,7 @@ class Api::V1::StatusesController < Api::BaseController
                                          application: doorkeeper_token.application,
                                          idempotency: request.headers['Idempotency-Key'])
 
-    render :show
+    render json: @status, serializer: REST::StatusSerializer
   end
 
   def destroy
@@ -70,7 +82,7 @@ class Api::V1::StatusesController < Api::BaseController
   end
 
   def pagination_params(core_params)
-    params.permit(:limit).merge(core_params)
+    params.slice(:limit).permit(:limit).merge(core_params)
   end
 
   def authorize_if_got_token

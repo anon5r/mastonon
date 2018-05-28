@@ -7,6 +7,7 @@ class Api::V1::FollowRequestsController < Api::BaseController
 
   def index
     @accounts = load_accounts
+    render json: @accounts, each_serializer: REST::AccountSerializer
   end
 
   def authorize
@@ -70,6 +71,6 @@ class Api::V1::FollowRequestsController < Api::BaseController
   end
 
   def pagination_params(core_params)
-    params.permit(:limit).merge(core_params)
+    params.slice(:limit).permit(:limit).merge(core_params)
   end
 end

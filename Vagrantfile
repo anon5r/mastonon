@@ -35,15 +35,21 @@ sudo apt-get install \
   postgresql-contrib \
   protobuf-compiler \
   yarn \
+  libicu-dev \
+  libidn11-dev \
   libprotobuf-dev \
   libreadline-dev \
+  libpam0g-dev \
   -y
 
 # Install rvm
 read RUBY_VERSION < .ruby-version
 gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-curl -sSL https://get.rvm.io | bash -s stable --ruby=$RUBY_VERSION
+curl -sSL https://raw.githubusercontent.com/rvm/rvm/stable/binscripts/rvm-installer | bash -s stable --ruby=$RUBY_VERSION
 source /home/vagrant/.rvm/scripts/rvm
+
+# Install Ruby
+rvm reinstall ruby-$RUBY_VERSION --disable-binary
 
 # Configure database
 sudo -u postgres createuser -U postgres vagrant -s
@@ -74,7 +80,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "ubuntu/xenial64"
 
   config.vm.provider :virtualbox do |vb|
     vb.name = "mastodon"

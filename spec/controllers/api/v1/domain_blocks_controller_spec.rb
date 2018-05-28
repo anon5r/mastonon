@@ -4,7 +4,7 @@ RSpec.describe Api::V1::DomainBlocksController, type: :controller do
   render_views
 
   let(:user)  { Fabricate(:user, account: Fabricate(:account, username: 'alice')) }
-  let(:token) { double acceptable?: true, resource_owner_id: user.id }
+  let(:token) { Fabricate(:accessible_access_token, resource_owner_id: user.id, scopes: 'follow') }
 
   before do
     user.account.block_domain!('example.com')
@@ -17,7 +17,7 @@ RSpec.describe Api::V1::DomainBlocksController, type: :controller do
     end
 
     it 'returns http success' do
-      expect(response).to have_http_status(:success)
+      expect(response).to have_http_status(200)
     end
 
     it 'returns blocked domains' do
@@ -31,7 +31,7 @@ RSpec.describe Api::V1::DomainBlocksController, type: :controller do
     end
 
     it 'returns http success' do
-      expect(response).to have_http_status(:success)
+      expect(response).to have_http_status(200)
     end
 
     it 'creates a domain block' do
@@ -45,7 +45,7 @@ RSpec.describe Api::V1::DomainBlocksController, type: :controller do
     end
 
     it 'returns http success' do
-      expect(response).to have_http_status(:success)
+      expect(response).to have_http_status(200)
     end
 
     it 'deletes a domain block' do
